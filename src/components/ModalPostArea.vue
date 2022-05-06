@@ -37,6 +37,7 @@
 <script>
 export default {
   name: "ModalPostArea",
+
   data() {
     return {
       titlePost: "",
@@ -47,6 +48,7 @@ export default {
         desc: "",
         text: "",
       },
+
       rules: {
         title: [
           {
@@ -78,6 +80,7 @@ export default {
       },
     };
   },
+
   methods: {
     createPost() {
       this.dialogVisible = true;
@@ -89,6 +92,11 @@ export default {
         if (valid) {
           this.$emit("add", this.form);
           this.dialogVisible = false;
+          this.form = {
+            title: "",
+            desc: "",
+            text: "",
+          };
         } else {
           console.log("error submit!!");
           return false;

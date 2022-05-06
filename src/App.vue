@@ -4,7 +4,7 @@
       <template v-if="posts.length">
         <div
           class="post"
-          @click="dialogVisible = true"
+          @click="openPost"
           v-for="(item, key) of posts"
           :key="key"
         >
@@ -43,108 +43,49 @@
         <h1>Нет постов</h1>
       </template>
 
-      <div class="modal-post">
-        <el-dialog title="Tips" :visible.sync="dialogVisible" width="90%">
-          <div class="post-title">lorem</div>
-          <div class="post-description">lorem</div>
-          <div class="post-comments">lorem</div>
-
-          <div class="form">
-            <el-form
-              :model="ruleForm"
-              :rules="rules"
-              ref="ruleForm"
-              label-width="120px"
-              class="demo-ruleForm"
-            >
-              <el-form-item label="Activity name" prop="name">
-                <el-input v-model="ruleForm.name"></el-input>
-              </el-form-item>
-              <el-form-item label="Activity form" prop="desc">
-                <el-input type="textarea" v-model="ruleForm.desc"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')"
-                  >Create</el-button
-                >
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-dialog>
-      </div>
       <modal-post-area @add="addPost" />
+      <modal-post-info :visible="postInfoVisible" @vis="toglePost" />
     </div>
   </div>
 </template>
 
 <script>
 import ModalPostArea from "./components/ModalPostArea.vue";
+import ModalPostInfo from "./components/ModalPostInfo.vue";
 
 export default {
   name: "App",
+
   components: {
     ModalPostArea,
+    ModalPostInfo,
   },
 
   data() {
     return {
+      postInfoVisible: false,
+
       posts: [
         {
           title: "1",
           desc: "2",
           text: "3",
         },
-        {
-          title: "1",
-          desc: "2",
-          text: "3",
-        },
       ],
-
-      dialogVisible: false,
-
-      ruleForm: {
-        name: "",
-        desc: "",
-      },
-      rules: {
-        name: [
-          {
-            required: true,
-            message: "Please input Activity name",
-            trigger: "blur",
-          },
-          {
-            min: 3,
-            max: 5,
-            message: "Length should be 3 to 5",
-            trigger: "blur",
-          },
-        ],
-        desc: [
-          {
-            required: true,
-            message: "Please input activity form",
-            trigger: "blur",
-          },
-        ],
-      },
     };
   },
-  methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
 
+  methods: {
     addPost(post) {
       this.posts.unshift(post);
+    },
+
+    openPost() {
+      this.postInfoVisible = true;
+    },
+
+    toglePost(param) {
+      this.postInfoVisible = param;
     },
   },
 };
