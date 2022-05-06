@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-add-post">
+  <div class="add-post-modal">
     <div class="add-post" @click="createPost">
       <el-tooltip effect="light" content="Add Post" placement="left">
         <div class="el-icon-circle-plus" />
@@ -36,7 +36,7 @@
 </template>
 <script>
 export default {
-  name: "ModalPostArea",
+  name: "AddPostModal",
 
   data() {
     return {

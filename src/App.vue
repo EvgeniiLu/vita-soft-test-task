@@ -4,7 +4,7 @@
       <template v-if="posts.length">
         <div
           class="post"
-          @click="openPost"
+          @click="openPost(key)"
           v-for="(item, key) of posts"
           :key="key"
         >
@@ -43,33 +43,45 @@
         <h1>Нет постов</h1>
       </template>
 
-      <modal-post-area @add="addPost" />
-      <modal-post-info :visible="postInfoVisible" @vis="toglePost" />
+      <div class="modal-post-info">
+        <el-dialog
+          title="Информация о посте"
+          :visible.sync="visiblePost"
+          width="90%"
+        >
+          <div class="post-title">{{ selectedPost.title }}</div>
+          <div class="post-description">{{ selectedPost.text }}</div>
+          <div class="post-comments">{{ selectedPost.comments }}</div>
+          <add-comments-form @addcomment="addCommentFunc" />
+        </el-dialog>
+      </div>
+      <add-post-modal @add="addPost" />
     </div>
   </div>
 </template>
 
 <script>
-import ModalPostArea from "./components/ModalPostArea.vue";
-import ModalPostInfo from "./components/ModalPostInfo.vue";
+import AddPostModal from "./components/AddPostModal.vue";
+import AddCommentsForm from "./components/AddCommentsForm.vue";
 
 export default {
   name: "App",
 
   components: {
-    ModalPostArea,
-    ModalPostInfo,
+    AddPostModal,
+    AddCommentsForm,
   },
 
   data() {
     return {
-      postInfoVisible: false,
-
+      visiblePost: false,
+      selectedPost: {},
       posts: [
         {
           title: "1",
           desc: "2",
           text: "3",
+          comments: "4",
         },
       ],
     };
@@ -78,14 +90,6 @@ export default {
   methods: {
     addPost(post) {
       this.posts.unshift(post);
-    },
-
-    openPost() {
-      this.postInfoVisible = true;
-    },
-
-    toglePost(param) {
-      this.postInfoVisible = param;
     },
   },
 };
