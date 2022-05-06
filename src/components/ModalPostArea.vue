@@ -36,7 +36,7 @@
 </template>
 <script>
 export default {
-  name: "AddPost",
+  name: "ModalPostArea",
   data() {
     return {
       titlePost: "",
@@ -87,7 +87,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$emit("addPost", this.form);
+          this.$emit("add", this.form);
+          this.dialogVisible = false;
         } else {
           console.log("error submit!!");
           return false;

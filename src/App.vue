@@ -5,13 +5,13 @@
         <div
           class="post"
           @click="dialogVisible = true"
-          v-for="item of posts"
-          :key="item"
+          v-for="(item, key) of posts"
+          :key="key"
         >
           <el-card shadow="hover">
             <div class="content">
-              <div class="post-title">lorem</div>
-              <div class="post-description">lorem</div>
+              <div class="post-title">{{ item.title }}</div>
+              <div class="post-description">{{ item.desc }}</div>
             </div>
             <div class="post-comments-counter">
               <el-badge :value="50" type="primary">
@@ -72,7 +72,7 @@
           </div>
         </el-dialog>
       </div>
-      <modal-post-area />
+      <modal-post-area @add="addPost" />
     </div>
   </div>
 </template>
@@ -88,7 +88,18 @@ export default {
 
   data() {
     return {
-      posts: [],
+      posts: [
+        {
+          title: "1",
+          desc: "2",
+          text: "3",
+        },
+        {
+          title: "1",
+          desc: "2",
+          text: "3",
+        },
+      ],
 
       dialogVisible: false,
 
@@ -130,6 +141,10 @@ export default {
           return false;
         }
       });
+    },
+
+    addPost(post) {
+      this.posts.unshift(post);
     },
   },
 };
