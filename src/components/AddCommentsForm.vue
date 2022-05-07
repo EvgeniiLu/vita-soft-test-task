@@ -39,7 +39,7 @@ export default {
           },
           {
             min: 3,
-            max: 5,
+            max: 20,
             message: "Length should be 3 to 5",
             trigger: "blur",
           },
@@ -58,7 +58,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$emit("addcomment", this.ruleForm);
+          this.$emit("commentAdd", this.ruleForm);
           this.ruleForm = {
             name: "",
             text: "",

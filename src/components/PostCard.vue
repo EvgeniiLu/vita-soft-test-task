@@ -5,7 +5,7 @@
       <div class="post-description">{{ post.desc }}</div>
     </div>
     <div class="post-comments-counter">
-      <el-badge :value="50" type="primary">
+      <el-badge :value="post.comments.length" type="primary">
         <div class="el-icon-chat-line-round" />
       </el-badge>
     </div>
@@ -13,16 +13,18 @@
       <el-button type="primary" icon="el-icon-edit" circle></el-button>
 
       <el-popconfirm
-        confirm-button-text="OK"
-        cancel-button-text="No, Thanks"
+        confirm-button-text="Да"
+        cancel-button-text="Нет"
         icon="el-icon-info"
-        title="Are you sure to delete this?"
+        title="Удалить пост?"
+        @confirm="deletePost"
       >
         <el-button
           slot="reference"
           type="danger"
           icon="el-icon-delete"
           circle
+          @click.stop
         ></el-button>
       </el-popconfirm>
     </div>
@@ -34,6 +36,12 @@ export default {
 
   props: {
     post: Object,
+  },
+
+  methods: {
+    deletePost() {
+      this.$emit("postdelete", this.post);
+    },
   },
 };
 </script>

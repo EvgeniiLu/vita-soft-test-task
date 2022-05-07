@@ -8,7 +8,7 @@
           v-for="(item, key) in posts"
           :key="key"
         >
-          <post-card :post="item" />
+          <post-card :post="item" @postdelete="deletePost" />
         </div>
       </template>
       <template v-else>
@@ -22,19 +22,19 @@
           width="90%"
         >
           <post-info :selected="selectedPost" />
-          <add-comments-form @addcomment="addCommentFunc" />
+          <add-comments-form @commentAdd="addCommentFunc" />
         </el-dialog>
       </div>
-      <add-post-modal @add="addPost" />
+      <add-post-form @postAdd="addPost" />
     </div>
   </div>
 </template>
 
 <script>
 import PostCard from "./components/PostCard.vue";
-import PostInfo from "./components/PostCard.vue";
+import PostInfo from "./components/PostInfo.vue";
 import AddCommentsForm from "./components/AddCommentsForm.vue";
-import AddPostModal from "./components/AddPostModal.vue";
+import AddPostForm from "./components/AddPostForm.vue";
 
 export default {
   name: "App",
@@ -43,7 +43,7 @@ export default {
     PostCard,
     PostInfo,
     AddCommentsForm,
-    AddPostModal,
+    AddPostForm,
   },
 
   data() {
@@ -60,6 +60,18 @@ export default {
               name: "4",
               text: "5",
             },
+            {
+              name: "4",
+              text: "5",
+            },
+            {
+              name: "4",
+              text: "5",
+            },
+            {
+              name: "4",
+              text: "5",
+            },
           ],
         },
       ],
@@ -70,6 +82,7 @@ export default {
     openPost(key) {
       this.visiblePost = true;
       this.selectedPost = this.posts[key];
+      console.log(this.selectedPost);
     },
 
     addPost(post) {
@@ -77,7 +90,11 @@ export default {
     },
 
     addCommentFunc(comment) {
-      console.log(comment);
+      this.selectedPost.comments.push(comment);
+    },
+
+    deletePost(post) {
+      this.posts = this.posts.filter((value) => value !== post);
     },
   },
 };

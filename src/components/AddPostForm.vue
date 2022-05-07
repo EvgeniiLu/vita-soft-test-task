@@ -36,7 +36,7 @@
 </template>
 <script>
 export default {
-  name: "AddPostModal",
+  name: "AddPostForm",
 
   data() {
     return {
@@ -47,6 +47,7 @@ export default {
         title: "",
         desc: "",
         text: "",
+        comments: [],
       },
 
       rules: {
@@ -90,12 +91,13 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$emit("add", this.form);
+          this.$emit("postAdd", this.form);
           this.dialogVisible = false;
           this.form = {
             title: "",
             desc: "",
             text: "",
+            comments: [],
           };
         } else {
           console.log("error submit!!");
