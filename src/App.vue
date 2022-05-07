@@ -11,9 +11,8 @@
           <post-card :post="item" />
         </div>
       </template>
-
       <template v-else>
-        <h1>Нет постов</h1>
+        <h1 class="empty">Нет постов</h1>
       </template>
 
       <div class="modal-post-info">
@@ -22,20 +21,8 @@
           :visible.sync="visiblePost"
           width="90%"
         >
-          <div class="post-title">{{ selectedPost.title }}</div>
-          <div class="post-description">{{ selectedPost.text }}</div>
-          <div
-            class="post-comments"
-            v-for="(item, key) in selectedPost.comments"
-            :key="key"
-          >
-            <div class="comment-name">{{ item.name }}</div>
-            <div class="comment-text">{{ item.text }}</div>
-          </div>
-          <add-comments-form
-            @addcomment="addCommentFunc"
-            :selected="selectedPost"
-          />
+          <post-info :selected="selectedPost" />
+          <add-comments-form @addcomment="addCommentFunc" />
         </el-dialog>
       </div>
       <add-post-modal @add="addPost" />
@@ -44,17 +31,19 @@
 </template>
 
 <script>
-import AddPostModal from "./components/AddPostModal.vue";
-import AddCommentsForm from "./components/AddCommentsForm.vue";
 import PostCard from "./components/PostCard.vue";
+import PostInfo from "./components/PostCard.vue";
+import AddCommentsForm from "./components/AddCommentsForm.vue";
+import AddPostModal from "./components/AddPostModal.vue";
 
 export default {
   name: "App",
 
   components: {
-    AddPostModal,
-    AddCommentsForm,
     PostCard,
+    PostInfo,
+    AddCommentsForm,
+    AddPostModal,
   },
 
   data() {
