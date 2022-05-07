@@ -5,37 +5,10 @@
         <div
           class="post"
           @click="openPost(key)"
-          v-for="(item, key) of posts"
+          v-for="(item, key) in posts"
           :key="key"
         >
-          <el-card shadow="hover">
-            <div class="content">
-              <div class="post-title">{{ item.title }}</div>
-              <div class="post-description">{{ item.desc }}</div>
-            </div>
-            <div class="post-comments-counter">
-              <el-badge :value="50" type="primary">
-                <div class="el-icon-chat-line-round" />
-              </el-badge>
-            </div>
-            <div class="edit">
-              <el-button type="primary" icon="el-icon-edit" circle></el-button>
-
-              <el-popconfirm
-                confirm-button-text="OK"
-                cancel-button-text="No, Thanks"
-                icon="el-icon-info"
-                title="Are you sure to delete this?"
-              >
-                <el-button
-                  slot="reference"
-                  type="danger"
-                  icon="el-icon-delete"
-                  circle
-                ></el-button>
-              </el-popconfirm>
-            </div>
-          </el-card>
+          <post-card :post="item" />
         </div>
       </template>
 
@@ -51,8 +24,18 @@
         >
           <div class="post-title">{{ selectedPost.title }}</div>
           <div class="post-description">{{ selectedPost.text }}</div>
-          <div class="post-comments">{{ selectedPost.comments }}</div>
-          <add-comments-form @addcomment="addCommentFunc" />
+          <div
+            class="post-comments"
+            v-for="(item, key) in selectedPost.comments"
+            :key="key"
+          >
+            <div class="comment-name">{{ item.name }}</div>
+            <div class="comment-text">{{ item.text }}</div>
+          </div>
+          <add-comments-form
+            @addcomment="addCommentFunc"
+            :selected="selectedPost"
+          />
         </el-dialog>
       </div>
       <add-post-modal @add="addPost" />
@@ -63,6 +46,7 @@
 <script>
 import AddPostModal from "./components/AddPostModal.vue";
 import AddCommentsForm from "./components/AddCommentsForm.vue";
+import PostCard from "./components/PostCard.vue";
 
 export default {
   name: "App",
@@ -70,6 +54,7 @@ export default {
   components: {
     AddPostModal,
     AddCommentsForm,
+    PostCard,
   },
 
   data() {
@@ -81,15 +66,29 @@ export default {
           title: "1",
           desc: "2",
           text: "3",
-          comments: "4",
+          comments: [
+            {
+              name: "4",
+              text: "5",
+            },
+          ],
         },
       ],
     };
   },
 
   methods: {
+    openPost(key) {
+      this.visiblePost = true;
+      this.selectedPost = this.posts[key];
+    },
+
     addPost(post) {
       this.posts.unshift(post);
+    },
+
+    addCommentFunc(comment) {
+      console.log(comment);
     },
   },
 };

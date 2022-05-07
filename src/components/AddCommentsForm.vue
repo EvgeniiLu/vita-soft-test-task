@@ -1,11 +1,6 @@
 <template>
   <div class="form">
-    <el-form
-      :model="ruleForm"
-      :rules="rules"
-      ref="ruleForm"
-      class="demo-ruleForm"
-    >
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
       <el-form-item prop="name">
         <el-input v-model="ruleForm.name" placeholder="Введите имя"></el-input>
       </el-form-item>
