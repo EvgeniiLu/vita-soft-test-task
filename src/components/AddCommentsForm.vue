@@ -44,6 +44,7 @@ export default {
             trigger: "blur",
           },
         ],
+
         text: [
           {
             required: true,
@@ -58,7 +59,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$emit("commentAdd", this.ruleForm);
+          this.$emit("addComment", this.ruleForm);
           this.ruleForm = {
             name: "",
             text: "",

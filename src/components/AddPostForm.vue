@@ -25,9 +25,9 @@
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('ruleForm')"
-              >Добавить</el-button
-            >
+            <el-button type="primary" @click="submitForm('ruleForm')">
+              {{ btnName }}
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -38,11 +38,27 @@
 export default {
   name: "AddPostForm",
 
+  props: {
+    edit: Object,
+  },
+
+  watch: {
+    edit() {
+      this.dialogVisible = true;
+      this.titlePost = "Редактировать пост";
+      this.btnName = "Редактировать";
+      this.form = this.edit;
+    },
+  },
+
   data() {
     return {
       titlePost: "",
 
+      btnName: "",
+
       dialogVisible: false,
+
       form: {
         title: "",
         desc: "",
@@ -64,6 +80,7 @@ export default {
             trigger: "blur",
           },
         ],
+
         desc: [
           {
             required: true,
@@ -71,6 +88,7 @@ export default {
             trigger: "blur",
           },
         ],
+
         text: [
           {
             required: true,
@@ -86,12 +104,13 @@ export default {
     createPost() {
       this.dialogVisible = true;
       this.titlePost = "Создать пост";
+      this.btnName = "Добавить";
     },
 
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$emit("postAdd", this.form);
+          this.$emit("addPost", this.form);
           this.dialogVisible = false;
           this.form = {
             title: "",

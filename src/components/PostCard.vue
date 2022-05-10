@@ -10,7 +10,12 @@
       </el-badge>
     </div>
     <div class="edit">
-      <el-button type="primary" icon="el-icon-edit" circle></el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-edit"
+        circle
+        @click.stop="editPost"
+      ></el-button>
 
       <el-popconfirm
         confirm-button-text="Да"
@@ -40,7 +45,11 @@ export default {
 
   methods: {
     deletePost() {
-      this.$emit("postdelete", this.post);
+      this.$emit("deletePost", this.post);
+    },
+
+    editPost() {
+      this.$emit("editPost", this.post);
     },
   },
 };

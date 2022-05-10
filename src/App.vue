@@ -8,7 +8,11 @@
           v-for="(item, key) in posts"
           :key="key"
         >
-          <post-card :post="item" @postdelete="deletePost" />
+          <post-card
+            :post="item"
+            @deletePost="deletePost"
+            @editPost="editPost"
+          />
         </div>
       </template>
       <template v-else>
@@ -21,11 +25,11 @@
           :visible.sync="visiblePost"
           width="90%"
         >
-          <post-info :selected="selectedPost" />
-          <add-comments-form @commentAdd="addCommentFunc" />
+          <post-info :selectedPost="selectedPost" />
+          <add-comments-form @addComment="addComment" />
         </el-dialog>
       </div>
-      <add-post-form @postAdd="addPost" />
+      <add-post-form @addPost="addPost" :edit="edit" />
     </div>
   </div>
 </template>
@@ -49,32 +53,12 @@ export default {
   data() {
     return {
       visiblePost: false,
+
       selectedPost: {},
-      posts: [
-        {
-          title: "1",
-          desc: "2",
-          text: "3",
-          comments: [
-            {
-              name: "4",
-              text: "5",
-            },
-            {
-              name: "4",
-              text: "5",
-            },
-            {
-              name: "4",
-              text: "5",
-            },
-            {
-              name: "4",
-              text: "5",
-            },
-          ],
-        },
-      ],
+
+      edit: {},
+
+      posts: [],
     };
   },
 
@@ -82,19 +66,26 @@ export default {
     openPost(key) {
       this.visiblePost = true;
       this.selectedPost = this.posts[key];
-      console.log(this.selectedPost);
     },
 
     addPost(post) {
-      this.posts.unshift(post);
+      if ("index" in post) {
+        this.posts.splice(post.index, 1, post);
+      } else this.posts.unshift(post);
     },
 
-    addCommentFunc(comment) {
+    addComment(comment) {
       this.selectedPost.comments.push(comment);
     },
 
     deletePost(post) {
       this.posts = this.posts.filter((value) => value !== post);
+    },
+
+    editPost(post) {
+      let { title, desc, text, comments } = post;
+      this.edit = { title, desc, text, comments };
+      this.edit.index = this.posts.indexOf(post);
     },
   },
 };
