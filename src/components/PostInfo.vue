@@ -2,8 +2,8 @@
   <div class="post-info">
     <div class="post-title">{{ selectedPost.title }}</div>
     <div class="post-description">{{ selectedPost.text }}</div>
-    <div class="post-comments">
-      <div v-for="(item, key) in selectedPost.comments" :key="key">
+    <div class="post-comments" v-if="selectedPost.comments.length">
+      <div v-for="item in selectedPost.comments" :key="item.time">
         <div class="comment-name">{{ item.name }}</div>
         <div class="comment-text">{{ item.text }}</div>
         <el-popconfirm

@@ -1,13 +1,13 @@
 <template>
   <div class="form">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
+    <el-form :model="form" :rules="rules" ref="ruleForm">
       <el-form-item prop="name">
-        <el-input v-model="ruleForm.name" placeholder="Введите имя"></el-input>
+        <el-input v-model="form.name" placeholder="Введите имя"></el-input>
       </el-form-item>
       <el-form-item prop="text">
         <el-input
           type="textarea"
-          v-model="ruleForm.text"
+          v-model="form.text"
           placeholder="Введите текст"
         ></el-input>
       </el-form-item>
@@ -25,7 +25,7 @@ export default {
 
   data() {
     return {
-      ruleForm: {
+      form: {
         name: "",
         text: "",
       },
@@ -34,13 +34,13 @@ export default {
         name: [
           {
             required: true,
-            message: "Please input Activity name",
+            message: "Введите имя",
             trigger: "blur",
           },
           {
             min: 3,
             max: 20,
-            message: "Length should be 3 to 5",
+            message: "Имя должно содержать не менее 3 и не более 20 символов",
             trigger: "blur",
           },
         ],
@@ -48,7 +48,7 @@ export default {
         text: [
           {
             required: true,
-            message: "Please input activity form",
+            message: "Введите комментарий",
             trigger: "blur",
           },
         ],
@@ -59,8 +59,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$emit("addComment", this.ruleForm);
-          this.ruleForm = {
+          this.$emit("addComment", this.form);
+
+          this.form = {
             name: "",
             text: "",
           };

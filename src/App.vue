@@ -6,7 +6,7 @@
           class="post"
           @click="openPost(key)"
           v-for="(item, key) in posts"
-          :key="key"
+          :key="item.time"
         >
           <post-card
             :post="item"
@@ -53,6 +53,15 @@ export default {
     PostForm,
   },
 
+  created: function () {
+    if (localStorage.length) {
+      for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        this.posts.unshift(JSON.parse(localStorage.getItem(key)));
+      }
+    }
+  },
+
   data() {
     return {
       visiblePost: false,
@@ -72,28 +81,47 @@ export default {
     },
 
     addPost(post) {
-      if ("index" in post) {
-        this.posts.splice(post.index, 1, post);
-      } else this.posts.unshift(post);
+      if ("time" in post) {
+        this.posts.forEach((value, key) => {
+          if (value.time === post.time) {
+            this.posts.splice(key, 1, post);
+            localStorage[`${value.time}`] = JSON.stringify(post);
+          }
+        });
+      } else {
+        post.time = Date.now();
+        this.posts.unshift(post);
+        localStorage.setItem(`${post.time}`, JSON.stringify(post));
+      }
     },
 
     deletePost(post) {
       this.posts = this.posts.filter((value) => value !== post);
+      localStorage.removeItem(`${post.time}`);
     },
 
     editPost(post) {
-      let { title, desc, text, comments } = post;
-      this.edit = { title, desc, text, comments };
-      this.edit.index = this.posts.indexOf(post);
+      let { title, desc, text, comments, time } = post;
+      this.edit = { title, desc, text, comments, time };
     },
 
     addComment(comment) {
+      comment.time = Date.now();
+      localStorage.removeItem(this.selectedPost.time);
       this.selectedPost.comments.push(comment);
+      localStorage.setItem(
+        `${this.selectedPost.time}`,
+        JSON.stringify(this.selectedPost)
+      );
     },
 
     deleteComment(comment) {
       this.selectedPost.comments = this.selectedPost.comments.filter(
         (value) => value !== comment
+      );
+      localStorage.setItem(
+        `${this.selectedPost.time}`,
+        JSON.stringify(this.selectedPost)
       );
     },
   },

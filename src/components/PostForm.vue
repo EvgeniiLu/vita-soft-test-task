@@ -70,13 +70,14 @@ export default {
         title: [
           {
             required: true,
-            message: "Please input Activity name",
+            message: "Введите название поста",
             trigger: "blur",
           },
           {
             min: 3,
             max: 20,
-            message: "Length should be 3 to 5",
+            message:
+              "Название поста должно содержать не менне 3 и не более 20 символов",
             trigger: "blur",
           },
         ],
@@ -84,7 +85,7 @@ export default {
         desc: [
           {
             required: true,
-            message: "Please input activity form",
+            message: "Введите описание",
             trigger: "blur",
           },
         ],
@@ -92,7 +93,7 @@ export default {
         text: [
           {
             required: true,
-            message: "Please input activity form",
+            message: "Введите текст",
             trigger: "blur",
           },
         ],
@@ -112,6 +113,7 @@ export default {
         if (valid) {
           this.$emit("addPost", this.form);
           this.dialogVisible = false;
+
           this.form = {
             title: "",
             desc: "",

@@ -9,7 +9,7 @@
         <div class="el-icon-chat-line-round" />
       </el-badge>
     </div>
-    <div class="edit">
+    <div class="post-btns">
       <el-button
         type="primary"
         icon="el-icon-edit"
