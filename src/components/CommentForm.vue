@@ -21,7 +21,7 @@
 </template>
 <script>
 export default {
-  name: "AddCommentsForm",
+  name: "AddCommentForm",
 
   data() {
     return {

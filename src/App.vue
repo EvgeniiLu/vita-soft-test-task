@@ -29,10 +29,10 @@
             :selectedPost="selectedPost"
             @deleteComment="deleteComment"
           />
-          <add-comments-form @addComment="addComment" />
+          <comment-form @addComment="addComment" />
         </el-dialog>
       </div>
-      <add-post-form @addPost="addPost" :edit="edit" />
+      <post-form @addPost="addPost" :edit="edit" />
     </div>
   </div>
 </template>
@@ -40,8 +40,8 @@
 <script>
 import PostCard from "./components/PostCard.vue";
 import PostInfo from "./components/PostInfo.vue";
-import AddCommentsForm from "./components/AddCommentsForm.vue";
-import AddPostForm from "./components/AddPostForm.vue";
+import CommentForm from "./components/CommentForm.vue";
+import PostForm from "./components/PostForm.vue";
 
 export default {
   name: "App",
@@ -49,8 +49,8 @@ export default {
   components: {
     PostCard,
     PostInfo,
-    AddCommentsForm,
-    AddPostForm,
+    CommentForm,
+    PostForm,
   },
 
   data() {
