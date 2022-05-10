@@ -25,7 +25,10 @@
           :visible.sync="visiblePost"
           width="90%"
         >
-          <post-info :selectedPost="selectedPost" />
+          <post-info
+            :selectedPost="selectedPost"
+            @deleteComment="deleteComment"
+          />
           <add-comments-form @addComment="addComment" />
         </el-dialog>
       </div>
@@ -74,10 +77,6 @@ export default {
       } else this.posts.unshift(post);
     },
 
-    addComment(comment) {
-      this.selectedPost.comments.push(comment);
-    },
-
     deletePost(post) {
       this.posts = this.posts.filter((value) => value !== post);
     },
@@ -86,6 +85,16 @@ export default {
       let { title, desc, text, comments } = post;
       this.edit = { title, desc, text, comments };
       this.edit.index = this.posts.indexOf(post);
+    },
+
+    addComment(comment) {
+      this.selectedPost.comments.push(comment);
+    },
+
+    deleteComment(comment) {
+      this.selectedPost.comments = this.selectedPost.comments.filter(
+        (value) => value !== comment
+      );
     },
   },
 };
