@@ -5,7 +5,11 @@
         <div class="el-icon-circle-plus" />
       </el-tooltip>
     </div>
-    <el-dialog :title="titlePost" :visible.sync="dialogVisible" width="90%">
+    <el-dialog
+      :title="titlePost"
+      :visible.sync="dialogVisible"
+      :fullscreen="true"
+    >
       <div class="form">
         <el-form :model="form" :rules="rules" ref="ruleForm">
           <el-form-item prop="title">
@@ -106,6 +110,12 @@ export default {
       this.dialogVisible = true;
       this.titlePost = "Создать пост";
       this.btnName = "Добавить";
+      this.form = {
+        title: "",
+        desc: "",
+        text: "",
+        comments: [],
+      };
     },
 
     submitForm(formName) {
@@ -113,13 +123,6 @@ export default {
         if (valid) {
           this.$emit("addPost", this.form);
           this.dialogVisible = false;
-
-          this.form = {
-            title: "",
-            desc: "",
-            text: "",
-            comments: [],
-          };
         } else {
           console.log("error submit!!");
           return false;

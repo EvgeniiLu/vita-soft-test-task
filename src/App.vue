@@ -23,7 +23,7 @@
         <el-dialog
           title="Информация о посте"
           :visible.sync="visiblePost"
-          width="90%"
+          :fullscreen="true"
         >
           <post-info
             :selectedPost="selectedPost"
@@ -53,11 +53,13 @@ export default {
     PostForm,
   },
 
-  created: function () {
+  mounted: function () {
     if (localStorage.length) {
       for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        this.posts.unshift(JSON.parse(localStorage.getItem(key)));
+        this.posts.unshift(
+          JSON.parse(localStorage.getItem(localStorage.key(i)))
+        );
+        this.posts.sort((a, b) => b.time - a.time);
       }
     }
   },
@@ -85,13 +87,13 @@ export default {
         this.posts.forEach((value, key) => {
           if (value.time === post.time) {
             this.posts.splice(key, 1, post);
-            localStorage[`${value.time}`] = JSON.stringify(post);
+            this.storageSetItem(post);
           }
         });
       } else {
         post.time = Date.now();
         this.posts.unshift(post);
-        localStorage.setItem(`${post.time}`, JSON.stringify(post));
+        this.storageSetItem(post);
       }
     },
 
@@ -107,22 +109,19 @@ export default {
 
     addComment(comment) {
       comment.time = Date.now();
-      localStorage.removeItem(this.selectedPost.time);
       this.selectedPost.comments.push(comment);
-      localStorage.setItem(
-        `${this.selectedPost.time}`,
-        JSON.stringify(this.selectedPost)
-      );
+      this.storageSetItem(this.selectedPost);
     },
 
     deleteComment(comment) {
       this.selectedPost.comments = this.selectedPost.comments.filter(
         (value) => value !== comment
       );
-      localStorage.setItem(
-        `${this.selectedPost.time}`,
-        JSON.stringify(this.selectedPost)
-      );
+      this.storageSetItem(this.selectedPost);
+    },
+    storageSetItem(item) {
+      localStorage.removeItem(item.time);
+      localStorage.setItem(`${item.time}`, JSON.stringify(item));
     },
   },
 };

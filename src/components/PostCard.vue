@@ -9,6 +9,7 @@
         <div class="el-icon-chat-line-round" />
       </el-badge>
     </div>
+    <div class="post-creation">{{ timeOfCreation }}</div>
     <div class="post-btns">
       <el-button
         type="primary"
@@ -36,11 +37,19 @@
   </el-card>
 </template>
 <script>
+import dayjs from "dayjs";
+
 export default {
   name: "PostCard",
 
   props: {
     post: Object,
+  },
+
+  computed: {
+    timeOfCreation() {
+      return dayjs(this.post.time).format("DD.MM.YYYY HH:mm");
+    },
   },
 
   methods: {
