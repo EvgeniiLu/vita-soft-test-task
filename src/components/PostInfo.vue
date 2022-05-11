@@ -1,9 +1,9 @@
 <template>
   <div class="post-info">
-    <div class="post-title">{{ selectedPost.title }}</div>
-    <div class="post-description">{{ selectedPost.text }}</div>
-    <div class="post-comments" v-if="selectedPost.comments.length">
-      <div v-for="item in selectedPost.comments" :key="item.time">
+    <div class="post-title">{{ openedPost.title }}</div>
+    <div class="post-description">{{ openedPost.text }}</div>
+    <div class="post-comments" v-if="openedPost.comments.length">
+      <div v-for="item in openedPost.comments" :key="item.time">
         <div class="comment-name">{{ item.name }}</div>
         <div class="comment-text">{{ item.text }}</div>
         <el-popconfirm
@@ -30,7 +30,7 @@ export default {
   name: "PostInfo",
 
   props: {
-    selectedPost: Object,
+    openedPost: Object,
   },
 
   methods: {

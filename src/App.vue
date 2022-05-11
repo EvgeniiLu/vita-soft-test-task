@@ -22,17 +22,32 @@
       <div class="modal-post-info">
         <el-dialog
           title="Информация о посте"
-          :visible.sync="visiblePost"
+          :visible.sync="visiblePostInfo"
           :fullscreen="true"
         >
-          <post-info
-            :selectedPost="selectedPost"
-            @deleteComment="deleteComment"
-          />
+          <post-info :openedPost="openedPost" @deleteComment="deleteComment" />
           <comment-form @addComment="addComment" />
         </el-dialog>
       </div>
-      <post-form @addPost="addPost" :edit="edit" />
+
+      <div class="modal-post-form">
+        <div class="create-post-btn" @click="createPost">
+          <el-tooltip effect="light" content="Создать пост" placement="left">
+            <div class="el-icon-circle-plus" />
+          </el-tooltip>
+        </div>
+        <el-dialog
+          :title="titlePostForm"
+          :visible.sync="visiblePostForm"
+          :fullscreen="true"
+        >
+          <post-form
+            @addPost="addPost"
+            :postObj="postObj"
+            :btnName="btnNamePostForm"
+          />
+        </el-dialog>
+      </div>
     </div>
   </div>
 </template>
@@ -66,20 +81,40 @@ export default {
 
   data() {
     return {
-      visiblePost: false,
+      visiblePostInfo: false,
 
-      selectedPost: {},
+      visiblePostForm: false,
 
-      edit: {},
+      titlePostForm: "",
+
+      btnNamePostForm: "",
+
+      openedPost: {},
+
+      postObj: {},
 
       posts: [],
     };
   },
 
   methods: {
-    openPost(key) {
-      this.visiblePost = true;
-      this.selectedPost = this.posts[key];
+    createPost() {
+      this.postObj = {
+        title: "",
+        desc: "",
+        text: "",
+        comments: [],
+      };
+      this.visiblePostForm = true;
+      this.titlePostForm = "Создать пост";
+      this.btnNamePostForm = "Добавить";
+    },
+
+    editPost(post) {
+      this.postObj = post;
+      this.visiblePostForm = true;
+      this.titlePostForm = "Редактировать пост";
+      this.btnNamePostForm = "Редактировать";
     },
 
     addPost(post) {
@@ -95,6 +130,12 @@ export default {
         this.posts.unshift(post);
         this.storageSetItem(post);
       }
+      this.visiblePostForm = false;
+    },
+
+    openPost(key) {
+      this.visiblePostInfo = true;
+      this.openedPost = this.posts[key];
     },
 
     deletePost(post) {
@@ -102,23 +143,19 @@ export default {
       localStorage.removeItem(`${post.time}`);
     },
 
-    editPost(post) {
-      let { title, desc, text, comments, time } = post;
-      this.edit = { title, desc, text, comments, time };
-    },
-
     addComment(comment) {
       comment.time = Date.now();
-      this.selectedPost.comments.push(comment);
-      this.storageSetItem(this.selectedPost);
+      this.openedPost.comments.push(comment);
+      this.storageSetItem(this.openedPost);
     },
 
     deleteComment(comment) {
-      this.selectedPost.comments = this.selectedPost.comments.filter(
+      this.openedPost.comments = this.openedPost.comments.filter(
         (value) => value !== comment
       );
-      this.storageSetItem(this.selectedPost);
+      this.storageSetItem(this.openedPost);
     },
+
     storageSetItem(item) {
       localStorage.removeItem(item.time);
       localStorage.setItem(`${item.time}`, JSON.stringify(item));
@@ -140,5 +177,17 @@ export default {
 
 .el-badge__content.is-fixed {
   border: none;
+}
+
+.create-post-btn {
+  font-size: 60px;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  color: #409eff;
+}
+
+.create-post-btn:hover {
+  opacity: 0.75;
 }
 </style>
