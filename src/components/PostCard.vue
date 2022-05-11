@@ -63,4 +63,12 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.post-comments-counter {
+  font-size: 32px;
+}
+
+.el-badge__content.is-fixed {
+  border: none;
+}
+</style>

@@ -2,21 +2,31 @@
   <div class="app">
     <div class="container">
       <template v-if="posts.length">
-        <div
-          class="post"
-          @click="openPost(key)"
-          v-for="(item, key) in posts"
-          :key="item.time"
-        >
-          <post-card
-            :post="item"
-            @deletePost="deletePost"
-            @editPost="editPost"
+        <div class="posts-list">
+          <div
+            class="post"
+            @click="openPost(key)"
+            v-for="(item, key) in postsList"
+            :key="item.time"
+          >
+            <post-card
+              :post="item"
+              @deletePost="deletePost"
+              @editPost="editPost"
+            />
+          </div>
+          <el-pagination
+            class="pag"
+            @current-change="setPage"
+            :current-page="page"
+            background
+            layout="prev, pager, next"
+            :total="pageSize"
           />
         </div>
       </template>
       <template v-else>
-        <h1 class="empty">Нет постов</h1>
+        <div class="empty"><h1>Нет постов</h1></div>
       </template>
 
       <div class="modal-post-info">
@@ -94,10 +104,40 @@ export default {
       postObj: {},
 
       posts: [],
+
+      page: 1,
     };
   },
 
+  computed: {
+    pageSize() {
+      return Math.ceil((this.posts.length / 6) * 10);
+    },
+
+    start() {
+      return (this.page - 1) * 6;
+    },
+
+    end() {
+      return this.page * 6 - 1;
+    },
+
+    postsList() {
+      return this.posts.slice(this.start, this.end);
+    },
+  },
+
+  watch: {
+    pageSize() {
+      if (Number.isInteger(this.pageSize / 10)) this.page = this.pageSize / 10;
+    },
+  },
+
   methods: {
+    setPage(val) {
+      this.page = val;
+    },
+
     createPost() {
       this.postObj = {
         title: "",
@@ -131,6 +171,7 @@ export default {
         this.storageSetItem(post);
       }
       this.visiblePostForm = false;
+      this.page = 1;
     },
 
     openPost(key) {
@@ -164,19 +205,52 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+body {
+  margin: 0;
+
+  font-size: 14px;
+  color: #6c7279;
+
+  background-color: #fff;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
 .container {
   width: 100%;
   max-width: 1300px;
   margin: 0 auto;
 }
 
-.post-comments-counter {
-  font-size: 32px;
-}
+.posts-list {
+  width: 100%;
+  height: 100vh;
+  position: relative;
 
-.el-badge__content.is-fixed {
-  border: none;
+  .pag {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .create-post-btn {
@@ -185,9 +259,19 @@ export default {
   bottom: 50px;
   right: 50px;
   color: #409eff;
+  opacity: 1;
+  :hover {
+    transition: opacity 0.2s linear;
+    opacity: 0.75;
+  }
 }
 
-.create-post-btn:hover {
-  opacity: 0.75;
+.empty {
+  font-size: 50px;
+  color: #303133;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
