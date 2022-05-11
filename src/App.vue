@@ -255,6 +255,7 @@ p {
     display: flex;
     flex-direction: column;
     min-height: 85%;
+
     .post {
       padding-bottom: 10px;
 
@@ -278,10 +279,11 @@ p {
   bottom: 50px;
   right: 50px;
   color: #409eff;
-  opacity: 1;
+
   :hover {
-    transition: opacity 0.2s linear;
+    transform: scale(1.1);
     opacity: 0.75;
+    transition: 0.2s linear;
   }
 }
 

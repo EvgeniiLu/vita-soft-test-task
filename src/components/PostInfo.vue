@@ -2,7 +2,7 @@
   <div class="post-info">
     <div class="post-title">{{ openedPost.title }}</div>
     <div class="post-description">{{ openedPost.text }}</div>
-    <div class="title-comments">Комментари:</div>
+    <div class="title-comments">Комментарии:</div>
     <template v-if="openedPost.comments.length">
       <div class="comments-list">
         <div

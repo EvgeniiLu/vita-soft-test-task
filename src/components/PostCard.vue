@@ -104,9 +104,11 @@ export default {
     .post-creation {
       margin-left: 10px;
     }
+
     .edit-btn {
       margin-left: 15px;
     }
+
     .delete-btn {
       margin-left: 15px;
     }
