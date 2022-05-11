@@ -2,16 +2,27 @@
   <div class="form">
     <el-form :model="form" :rules="rules" ref="ruleForm">
       <el-form-item prop="title">
-        <el-input v-model="form.title" placeholder="Заголовок"></el-input>
+        <el-input
+          v-model="form.title"
+          placeholder="Заголовок"
+          maxlength="30"
+          show-word-limit
+        ></el-input>
       </el-form-item>
       <el-form-item prop="desc">
-        <el-input v-model="form.desc" placeholder="Краткое описание"></el-input>
+        <el-input
+          v-model="form.desc"
+          placeholder="Краткое описание"
+          maxlength="100"
+          show-word-limit
+        ></el-input>
       </el-form-item>
       <el-form-item prop="text">
         <el-input
           type="textarea"
           v-model="form.text"
           placeholder="Введите текст"
+          :rows="7"
         ></el-input>
       </el-form-item>
       <el-form-item>
@@ -54,9 +65,7 @@ export default {
           },
           {
             min: 3,
-            max: 20,
-            message:
-              "Название поста должно содержать не менне 3 и не более 20 символов",
+            message: "Название поста должно содержать не менне 3 символов",
             trigger: "blur",
           },
         ],
@@ -65,6 +74,11 @@ export default {
           {
             required: true,
             message: "Введите описание",
+            trigger: "blur",
+          },
+          {
+            min: 5,
+            message: "Описание поста должно содержать не менне 5 символов",
             trigger: "blur",
           },
         ],

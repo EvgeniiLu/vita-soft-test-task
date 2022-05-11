@@ -1,38 +1,44 @@
 <template>
-  <el-card shadow="hover">
-    <div class="content">
-      <div class="post-title">{{ post.title }}</div>
-      <div class="post-description">{{ post.desc }}</div>
-    </div>
-    <div class="post-comments-counter">
-      <el-badge :value="post.comments.length" type="primary">
-        <div class="el-icon-chat-line-round" />
-      </el-badge>
-    </div>
-    <div class="post-creation">{{ timeOfCreation }}</div>
-    <div class="post-btns">
-      <el-button
-        type="primary"
-        icon="el-icon-edit"
-        circle
-        @click.stop="editPost"
-      ></el-button>
+  <el-card shadow="hover" class="post-card">
+    <div class="post-card-inner">
+      <div class="post-card-left">
+        <div class="post-title">{{ post.title }}</div>
+        <div class="post-description">{{ post.desc }}</div>
+        <div class="post-comments-counter">
+          <el-badge :value="post.comments.length" type="primary">
+            <div class="el-icon-chat-line-round" />
+          </el-badge>
+        </div>
+      </div>
+      <div class="post-card-right">
+        <div class="post-creation">{{ timeOfCreation }}</div>
+        <div class="post-btns">
+          <el-button
+            class="edit-btn"
+            type="primary"
+            icon="el-icon-edit"
+            circle
+            @click.stop="editPost"
+          ></el-button>
 
-      <el-popconfirm
-        confirm-button-text="Да"
-        cancel-button-text="Нет"
-        icon="el-icon-info"
-        title="Удалить пост?"
-        @confirm="deletePost"
-      >
-        <el-button
-          slot="reference"
-          type="danger"
-          icon="el-icon-delete"
-          circle
-          @click.stop
-        ></el-button>
-      </el-popconfirm>
+          <el-popconfirm
+            confirm-button-text="Да"
+            cancel-button-text="Нет"
+            icon="el-icon-info"
+            title="Удалить пост?"
+            @confirm="deletePost"
+          >
+            <el-button
+              class="delete-btn"
+              slot="reference"
+              type="danger"
+              icon="el-icon-delete"
+              circle
+              @click.stop
+            ></el-button>
+          </el-popconfirm>
+        </div>
+      </div>
     </div>
   </el-card>
 </template>
@@ -64,11 +70,50 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.post-comments-counter {
-  font-size: 32px;
+.post-card-inner {
+  display: flex;
+  justify-content: space-between;
+
+  .post-card-left {
+    width: 70%;
+
+    .post-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .post-description {
+      display: block;
+      width: 100%;
+      font-size: 15px;
+      padding-top: 5px;
+    }
+
+    .post-comments-counter {
+      padding-top: 15px;
+    }
+  }
+
+  .post-card-right {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .post-creation {
+      margin-left: 10px;
+    }
+    .edit-btn {
+      margin-left: 15px;
+    }
+    .delete-btn {
+      margin-left: 15px;
+    }
+  }
 }
 
-.el-badge__content.is-fixed {
-  border: none;
+.post-comments-counter {
+  font-size: 32px;
 }
 </style>

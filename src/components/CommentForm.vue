@@ -2,7 +2,12 @@
   <div class="form">
     <el-form :model="form" :rules="rules" ref="ruleForm">
       <el-form-item prop="name">
-        <el-input v-model="form.name" placeholder="Введите имя"></el-input>
+        <el-input
+          v-model="form.name"
+          placeholder="Введите имя"
+          maxlength="30"
+          show-word-limit
+        ></el-input>
       </el-form-item>
       <el-form-item prop="text">
         <el-input
@@ -39,8 +44,7 @@ export default {
           },
           {
             min: 3,
-            max: 20,
-            message: "Имя должно содержать не менее 3 и не более 20 символов",
+            message: "Имя должно содержать не менее 3 символов",
             trigger: "blur",
           },
         ],

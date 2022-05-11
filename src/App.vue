@@ -2,27 +2,31 @@
   <div class="app">
     <div class="container">
       <template v-if="posts.length">
-        <div class="posts-list">
-          <div
-            class="post"
-            @click="openPost(key)"
-            v-for="(item, key) in postsList"
-            :key="item.time"
-          >
-            <post-card
-              :post="item"
-              @deletePost="deletePost"
-              @editPost="editPost"
+        <div class="posts-block">
+          <div class="post-list">
+            <div
+              class="post"
+              @click="openPost(key)"
+              v-for="(item, key) in postsList"
+              :key="item.time"
+            >
+              <post-card
+                :post="item"
+                @deletePost="deletePost"
+                @editPost="editPost"
+              />
+            </div>
+          </div>
+
+          <div class="pag">
+            <el-pagination
+              @current-change="setPage"
+              :current-page="page"
+              background
+              layout="prev, pager, next"
+              :total="pageSize"
             />
           </div>
-          <el-pagination
-            class="pag"
-            @current-change="setPage"
-            :current-page="page"
-            background
-            layout="prev, pager, next"
-            :total="pageSize"
-          />
         </div>
       </template>
       <template v-else>
@@ -33,7 +37,8 @@
         <el-dialog
           title="Информация о посте"
           :visible.sync="visiblePostInfo"
-          :fullscreen="true"
+          width="60%"
+          top="10vh"
         >
           <post-info :openedPost="openedPost" @deleteComment="deleteComment" />
           <comment-form @addComment="addComment" />
@@ -49,7 +54,8 @@
         <el-dialog
           :title="titlePostForm"
           :visible.sync="visiblePostForm"
-          :fullscreen="true"
+          width="60%"
+          top="15vh"
         >
           <post-form
             @addPost="addPost"
@@ -151,7 +157,8 @@ export default {
     },
 
     editPost(post) {
-      this.postObj = post;
+      let { title, desc, text, comments, time } = post;
+      this.postObj = { title, desc, text, comments, time };
       this.visiblePostForm = true;
       this.titlePostForm = "Редактировать пост";
       this.btnNamePostForm = "Редактировать";
@@ -208,10 +215,8 @@ export default {
 <style lang="scss">
 body {
   margin: 0;
-
-  font-size: 14px;
+  font-size: 15px;
   color: #6c7279;
-
   background-color: #fff;
 }
 
@@ -231,7 +236,7 @@ h6 {
 }
 
 p {
-  margin: 0 0 10px;
+  margin: 0;
 }
 
 .container {
@@ -240,16 +245,30 @@ p {
   margin: 0 auto;
 }
 
-.posts-list {
+.posts-block {
   width: 100%;
   height: 100vh;
   position: relative;
+  padding: 10px;
+
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    min-height: 85%;
+    .post {
+      padding-bottom: 10px;
+
+      :hover {
+        cursor: pointer;
+      }
+    }
+  }
 
   .pag {
-    position: absolute;
-    bottom: 10%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    min-height: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -273,5 +292,9 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.el-badge__content.is-fixed {
+  border: none;
 }
 </style>
